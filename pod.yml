@@ -1,5 +1,5 @@
-apiVersion: apps/v1bete1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: shankar3-deployment
 spec:
@@ -35,7 +35,7 @@ metadata:
   name: shankar4-service
   namespace: default
 spec:
-  type: NodePort
+  type: Loadbalancer
   selector:
     app: shankar3
   ports:
