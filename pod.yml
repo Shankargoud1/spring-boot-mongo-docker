@@ -34,7 +34,7 @@ spec:
   selector:
     app: shankarsss
   ports:
-  - nodePort: 32509
+  - nodePort: 32400
     protocol: TCP
     targetPort: 8080
     port: 80 
