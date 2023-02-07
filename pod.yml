@@ -18,11 +18,6 @@ spec:
         app: shankarss   
 spec:
   containers:
-  - env:
-    - name: APP_DEBUG
-      value: "0"
-    - name: APP_ENV
-      value: prod
   - name: shankar-containers
     image: "dockerawsdevops1/docker-private-repo:latest"
   imagePullSecrets:
@@ -35,11 +30,11 @@ metadata:
   name: shankar5-service
   namespace: default
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: shankarss
   ports:
-  - nodePort: 32508
+  - nodePort: 32509
     protocol: TCP
     targetPort: 8080
     port: 80 
