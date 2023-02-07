@@ -1,9 +1,21 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: shankar1-pod
-  labels:
-    app: shankara
+  name: shankar2-deployment
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: shankar2
+  template:
+    metadata:
+      labels:
+        app: shankar2   
 spec:
   containers:
   - name: shankar-cont
@@ -15,14 +27,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: shankar2-service
+  name: shankar3-service
   namespace: default
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
-    app: shankara
+    app: shankar2
   ports:
-  - nodePort: 32504
+  - nodePort: 32505
     protocol: TCP
     targetPort: 8080
     port: 80 
