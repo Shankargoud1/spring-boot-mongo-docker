@@ -35,7 +35,7 @@ metadata:
   name: shankar5-service
   namespace: default
 spec:
-  type: Loadbalancer
+  type: LoadBalancer
   selector:
     app: shankarss
   ports:
