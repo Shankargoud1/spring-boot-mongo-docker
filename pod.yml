@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: shankar4-pod
+  name: shankar45-pod
 spec:
   replicas: 5
   strategy:
@@ -11,14 +11,14 @@ spec:
       maxUnavailable: 25%
   selector:
     matchLabels:
-      app: shankarss
+      app: shankarsss
   template:
     metadata:
       labels:
-        app: shankarss   
+        app: shankarsss   
 spec:
   containers:
-  - name: shankar-containers
+  - name: shankars-containers
     image: "dockerawsdevops1/docker-private-repo:latest"
   imagePullSecrets:
   - name: smily
@@ -27,12 +27,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: shankar5-service
+  name: shankar54-service
   namespace: default
 spec:
   type: NodePort
   selector:
-    app: shankarss
+    app: shankarsss
   ports:
   - nodePort: 32509
     protocol: TCP
