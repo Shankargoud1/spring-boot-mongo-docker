@@ -1,41 +1,51 @@
-node{
-     
-    stage('SCM Checkout'){
-        git credentialsId: 'GIT_CREDENTIALS', url:  'https://github.com/MithunTechnologiesDevOps/spring-boot-mongo-docker.git',branch: 'master'
-    }
-    
-    stage(" Maven Clean Package"){
-      def mavenHome =  tool name: "Maven-3.6.1", type: "maven"
-      def mavenCMD = "${mavenHome}/bin/mvn"
-      sh "${mavenCMD} clean package"
-      
-    } 
-    
-    
-    stage('Build Docker Image'){
-        sh 'docker build -t dockerhandson/spring-boot-mongo .'
-    }
-    
-    stage('Push Docker Image'){
-        withCredentials([string(credentialsId: 'DOKCER_HUB_PASSWORD', variable: 'DOKCER_HUB_PASSWORD')]) {
-          sh "docker login -u dockerhandson -p ${DOKCER_HUB_PASSWORD}"
+pipeline{
+    agent any
+    stages {
+        stage('git_checkout') {
+            steps{
+                
+               git credentialsId: 'shankar', url: 'git@github.com:Shankargoud1/spring-boot-war-example.git'
+            }
+           }
+         
+            stage('Maven Build'){
+            steps{
+                sh "mvn clean package"
+            }
+        }       
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                  sh 'docker build -t dockerawsdevops1/docker-private-repo:latest .'
+                }
+            }
         }
-        sh 'docker push dockerhandson/spring-boot-mongo'
-     }
-     
-     stage("Deploy To Kuberates Cluster"){
-       kubernetesDeploy(
-         configs: 'springBootMongo.yml', 
-         kubeconfigId: 'KUBERNATES_CONFIG',
-         enableConfigSubstitution: true
-        )
-     }
-	 
-	  /**
-      stage("Deploy To Kuberates Cluster"){
-        sh 'kubectl apply -f springBootMongo.yml'
-      } **/
-     
-}
-
-
+        stage('Deploy Docker Image') {
+            steps {
+                script {
+                 withCredentials([string(credentialsId: ''DOCKER_HUB', variable: ''DOCKER_HUB')]) {
+                    sh 'docker login -u dockerawsdevops1 -p ${'DOCKER_HUB}'
+                 }  
+                 sh 'docker push dockerawsdevops1/docker-private-repo:latest'
+                }
+            }
+        }
+    
+    stage('Deploy App on k8s') {
+      steps {
+            sshagent(['k8s']) {
+            sh "scp -o StrictHostKeyChecking=no nodejsapp.yaml ubuntu@IPofk8scluster:/home/ubuntu"
+            script {
+                try{
+                    sh "ssh ubuntu@IPofk8scluster kubectl create -f ."
+                }catch(error){
+                    sh "ssh ubuntu@IPofk8scluster kubectl create -f ."
+           }
+          }
+         }
+         }
+      
+    
+    
+    
