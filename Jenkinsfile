@@ -25,7 +25,7 @@ pipeline{
             steps {
                 script {
                  withCredentials([string(credentialsId: ''DOCKER_HUB', variable: ''DOCKER_HUB')]) {
-                    sh 'docker login -u dockerawsdevops1 -p ${'DOCKER_HUB}'
+                    sh 'docker login -u dockerawsdevops1 -p ${'DOCKER_HUB'}
                  }  
                  sh 'docker push dockerawsdevops1/docker-private-repo:latest'
                 }
